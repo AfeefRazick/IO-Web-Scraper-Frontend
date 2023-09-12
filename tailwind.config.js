@@ -9,7 +9,18 @@ export default {
   ],
 
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        background: "#0A2E36",
+        carblue: "#006D77",
+      },
+      fontFamily: {
+        nunito: ["Nunito", "sans-serif"],
+        rubik: ["Rubik", "sans-serif"],
+        lato: ["Lato", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
