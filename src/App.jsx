@@ -13,7 +13,6 @@ function App() {
   });
 
   const getCompanies = useGetCompanies(state, setState);
-  // set loading state button circling 'scraping data...'
 
   return (
     <>
