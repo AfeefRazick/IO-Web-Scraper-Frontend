@@ -13,6 +13,14 @@ export default {
       backgroundColor: {
         background: "#0A2E36",
         carblue: "#006D77",
+        accent: "#4CE0B3",
+        greenish: "#09E85E",
+      },
+      borderColor: {
+        greenish: "#09E85E",
+      },
+      color: {
+        accent: "#4CE0B3",
       },
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],

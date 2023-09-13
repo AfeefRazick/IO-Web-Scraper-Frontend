@@ -2,29 +2,18 @@ import "react-dropdown/style.css";
 import { IndustrySelector } from "./components/IndustrySelector";
 import { useState } from "react";
 import { productList, serviceList } from "./data/dropdownCategories";
-import { axiosInstance } from "./api/axiosInstance";
-import { useDownloadCSV } from "./hooks/useDownloadCSV";
+import { useGetCompanies } from "./hooks/useGetCompanies";
+import { IoArrowDownCircle } from "react-icons/io5";
+import { AiOutlineLoading } from "react-icons/ai";
 
 function App() {
   const [state, setState] = useState({
-    selected: { link: undefined, category: undefined },
+    selected: null,
+    isScraping: false,
   });
-  const downloadCSV = useDownloadCSV();
 
+  const getCompanies = useGetCompanies(state, setState);
   // set loading state button circling 'scraping data...'
-  // information top of lists
-  // settin active selector next to button category name
-  const getCompanies = async () => {
-    const response = await axiosInstance.post("/companies", {
-      category: state.selected.category,
-      link: state.selected.link,
-    });
-
-    if (response.data) {
-      downloadCSV(response?.data?.csvFile, response?.data?.filename);
-    }
-    console.log(response);
-  };
 
   return (
     <>
@@ -36,22 +25,57 @@ function App() {
           </span>
         </h1>
 
-        <div className="w-full pt-10 pb-60 flex flex-col md:flex-row">
+        <p className="text-center">
+          Scrapes the export companies in Sri lanka for a given Industry.
+        </p>
+        <p className="text-center leading-loose">
+          Click <span className="button-55 rounded-sm mx-1">GET COMPANIES</span>{" "}
+          to download csv
+        </p>
+
+        <h3 className="text-xl pt-8 text-center text-[#4CE0B3] ">
+          Choose the Industry
+        </h3>
+
+        <div className="w-full pt-4 pb-2 md:pb-20 flex flex-col md:flex-row">
           <IndustrySelector
+            isSelected={productList.find(
+              (category) => category.label === state?.selected?.category
+            )}
+            type="Products"
             state={state}
             setState={setState}
             list={productList}
           />
 
           <IndustrySelector
+            isSelected={serviceList.find(
+              (category) => category.label === state?.selected?.category
+            )}
+            type="Services"
             state={state}
             setState={setState}
             list={serviceList}
           />
         </div>
 
-        <button className="button-54 rounded-md" onClick={getCompanies}>
-          Get Companies
+        {state.selected && !state.isScraping && (
+          <IoArrowDownCircle className="animate-bounce text-4xl" />
+        )}
+        <p className="text-lg leading-loose"> {state.selected?.category} </p>
+
+        <button
+          className="!bg-greenish flex items-center !text-black button-54 rounded-md"
+          onClick={getCompanies}
+        >
+          {state.isScraping ? (
+            <>
+              <AiOutlineLoading className="mr-2 inline animate-spin" />
+              Scraping Data...
+            </>
+          ) : (
+            "Get Companies"
+          )}
         </button>
       </div>
     </>
